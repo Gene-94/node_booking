@@ -20,19 +20,20 @@ model Client {
 
 model Office {
   id      Int       @id @default(autoincrement())
-  name    String?
+  name    String?   @unique
   type    String
+  details String?
   Booking Booking[]
 }
 
 model Booking {
-  id       Int    @id @default(autoincrement())
-  office   Office @relation(fields: [officeId], references: [id])
-  client   Client   @relation(fields: [clientId], references: [id])
-  officeId Int
-  clientId   Int
-  createdAt DateTime @default(now())
-  bookedFrom DateTime
+  id          Int      @id @default(autoincrement())
+  office      Office   @relation(fields: [officeId], references: [id])
+  client      Client   @relation(fields: [clientId], references: [id])
+  officeId    Int
+  clientId    Int
+  createdAt   DateTime @default(now())
+  bookedFrom  DateTime
   bookedUntil DateTime
 
   @@unique([officeId, bookedFrom])
