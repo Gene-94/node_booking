@@ -1,2 +1,6 @@
 to start server run $ nodemon server.js
 to commit schema alteration to database run $ npx prisma migrate dev
+
+resources:
+https://www.youtube.com/watch?v=RebA5J-rlwg
+https://www.youtube.com/watch?v=pqxIlygAo0g
