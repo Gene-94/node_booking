@@ -22,6 +22,7 @@ model Office {
   id      Int       @id @default(autoincrement())
   name    String?   @unique
   type    String
+  details String?
   Booking Booking[]
 }
 
