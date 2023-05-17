@@ -12,20 +12,6 @@ app.use(express.json())
 app.use(express.static('public'))
 
 
-// connecting to database
-var con = mysql.createConnection({
-    host: "localhost",
-    port: "3306",
-    database: "node_bookings",
-    user: "root",
-    password: "Data_Master369"
-  });
-
-  con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-  });
-
 // registering routes
 app.get('/', (req, res) => {
     res.send("It's alive")
@@ -41,7 +27,7 @@ app.post("/rpc", async (req, res) => {
 // rest endpoints
 app.get("/offices", async (req, res) => {
   const offices = await prisma.office.findMany().catch(e => {
-    res.sendStatus(500)
+    res.status(500).send("An error occurred: " + e.message)
   })
   await prisma.$disconnect()
   if(offices.length >0) res.send(offices)
@@ -55,7 +41,8 @@ app.get("/offices/office/:id", async (req , res) => {
       id:officeId
     }
   }).catch(e => {
-    res.sendStatus(500)
+    res.status(500).send("An error occurred: " + e.message)
+    return
   })
   await prisma.$disconnect()
   if(office)
@@ -68,16 +55,26 @@ app.post("/offices/office", async (req, res) => {
   const newOffice = await prisma.office.create({
     data:{
       name: req.body.name,
-      type: req.body.type
+      type: req.body.type,
+      details: req.body.details
     }
   }).catch(e => {
-    res.sendStatus(500)
+    res.status(500).send("An error occurred: " + e.message)
+    return
   })
   await prisma.$disconnect()
   res.send(newOffice)
 })
 
-app.delete("/offices/ofice/:id",  async (req,res) => await prisma.office.delete({where:{id: req.params.id}}))
+app.delete("/offices/office/:id",  async (req,res, next) => {
+  await prisma.office.delete({where:{id: Number(req.params.id)}})
+  .catch(e => {
+    res.status(500).send("An error occurred: " + e.message)
+    return
+  })
+  await prisma.$disconnect()
+  res.sendStatus(200)
+})
 
 //start server ( using nodemon )
 app.listen(7531, () => console.log("Running on port 7531"))
