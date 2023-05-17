@@ -1,6 +1,5 @@
 const express = require('express')
 const morgan = require('morgan')
-var mysql = require('mysql')
 const actions = require("./actions")
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
