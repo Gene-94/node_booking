@@ -12,20 +12,6 @@ app.use(express.json())
 app.use(express.static('public'))
 
 
-// connecting to database
-var con = mysql.createConnection({
-    host: "localhost",
-    port: "3306",
-    database: "node_bookings",
-    user: "root",
-    password: "Data_Master369"
-  });
-
-  con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-  });
-
 // registering routes
 app.get('/', (req, res) => {
     res.send("It's alive")
