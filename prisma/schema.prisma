@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Client {
   id      Int       @id @default(autoincrement())
   name    String
   email   String
@@ -28,10 +28,12 @@ model Office {
 model Booking {
   id       Int    @id @default(autoincrement())
   office   Office @relation(fields: [officeId], references: [id])
-  client   User   @relation(fields: [userId], references: [id])
+  client   Client   @relation(fields: [clientId], references: [id])
   officeId Int
-  userId   Int
+  clientId   Int
   createdAt DateTime @default(now())
   bookedFrom DateTime
   bookedUntil DateTime
+
+  @@unique([officeId, bookedFrom])
 }

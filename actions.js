@@ -3,19 +3,16 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 const actions = {
-    getOffices: (payload) => prisma.offices,
-    createTodo: async (payload) => {
-        const newTodo = {
-            message: payload.message
-        }
-        todos.push(newTodo)
-        return {result: "ok"}
-        const newUser = await prisma.user.create({
+    getOffices: async (payload) => await prisma.office.findMany(),
+    createOffice: async (payload) => {
+        
+        const newOffice = await prisma.office.create({
             data: {
               name: payload.name,
-              email: 'alice@prisma.io',
+              type: payload.type,
             },
           })
+          return {result: newOffice}
     }
 }
 
