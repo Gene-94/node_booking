@@ -62,6 +62,7 @@ app.post("/offices/office", async (req, res) => {
     res.send(newOffice);
 });
 app.delete("/offices/office/:id", async (req, res, next) => {
+
     await prisma.office.delete({ where: { id: Number(req.params.id) } })
         .catch(e => {
         res.status(500).send("An error occurred: " + e.message);
